@@ -1,4 +1,4 @@
-package com.ecommerce.admin.user;
+package com.ecommerce.common.entity;
 
 import jakarta.persistence.*;
 
