@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.list;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -39,5 +40,48 @@ public class UserRepositoryTests {
         userAhmet.addRole(roleAssistant);
         User savedUser = userRepository.save(userAhmet);
         assertThat(savedUser.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testListAllUsers(){
+        Iterable<User> listUsers = userRepository.findAll();
+        listUsers.forEach(user -> System.out.println(user));
+    }
+
+    @Test
+    public void testGetUserById(){
+
+        User userHuso = userRepository.findById(1).get();
+        System.out.println(userHuso);
+        assertThat(userHuso.getId()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testUpdateUserDetails(){
+
+        User userHuso = userRepository.findById(1).get();
+        userHuso.setEnabled(true);
+        userHuso.setEmail("test4@test.com");
+
+    }
+    @Test
+    public void testUpdateUserRoles(){
+
+        User userAhmet = userRepository.findById(2).get();
+        Role roleEditor = new Role(3);
+        Role roleSalesPerson = new Role(2);
+
+        userAhmet.getRoles().remove(roleEditor);
+        userAhmet.addRole((roleSalesPerson));
+        userRepository.save(userAhmet);
+
+    }
+
+    @Test
+    public void testDeleteUser(){
+
+        Integer userId = 2;
+        userRepository.deleteById(userId);
+
     }
 }
