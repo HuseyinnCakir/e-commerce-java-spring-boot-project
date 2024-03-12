@@ -30,7 +30,7 @@ public class UserController {
 
     }
 
-    /*@GetMapping("/users")
+    /*@GetMapping("/users/new")
     public String newUser(Model model){
         List<Role> listRoles = service.listRoles();
         User user = new User();
@@ -41,8 +41,8 @@ public class UserController {
 
     }*/
 
-    @PostMapping("/users")
-    public String saveUser(@RequestBody User user){
+    @PostMapping("/users/save")
+    public String saveUser(User user){
         System.out.println(user);
         service.save(user);
         return "User Created";
