@@ -1,12 +1,16 @@
 package com.ecommerce.admin.user;
 
+import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.common.entity.Role;
 import com.ecommerce.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -39,9 +43,22 @@ public class UserController {
     }*/
 
     @PostMapping("/users/save")
-    public String saveUser(User user) {
+    public String saveUser(User user, @RequestParam("image")MultipartFile multipartFile) throws IOException {
         System.out.println(user);
-        service.save(user);
+        if(!multipartFile.isEmpty()){
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            user.setPhotos(fileName);
+            User savedUser = service.save(user);
+            String uploadDir = "user-photos" + savedUser.getId();
+            FileUploadUtil.cleanDir(uploadDir);
+            FileUploadUtil.saveFile(uploadDir,fileName,multipartFile);
+        }
+        else{
+            if(user.getPhotos().isEmpty()) user.setPhotos(null);
+            service.save(user);
+        }
+
+
         return "User Created";
 
     }
