@@ -19,7 +19,7 @@ public class UserController {
     private RoleRepository roleRepository;
 
     @GetMapping("/users")
-    public List<User> listAll(Model model){
+    public List<User> listAll(Model model) {
         List<User> listUsers = service.listAll();
         //model.addAttribute("listUsers",listUsers);
         //return "users
@@ -39,7 +39,7 @@ public class UserController {
     }*/
 
     @PostMapping("/users/save")
-    public String saveUser(User user){
+    public String saveUser(User user) {
         System.out.println(user);
         service.save(user);
         return "User Created";
@@ -47,15 +47,25 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/{id}")
-    public User editUser(@PathVariable(name="id") Integer id){
-        try{
+    public User editUser(@PathVariable(name = "id") Integer id) {
+        try {
             User user = service.get(id);
             return user;
-        }
-        catch (UserNotFoundException ex){
+        } catch (UserNotFoundException ex) {
 
         }
         return null;
+
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable(name = "id") Integer id) {
+        try {
+            service.delete(id);
+            return "Deleted";
+        } catch (UserNotFoundException ex) {
+            return "User not found";
+        }
 
     }
 }
