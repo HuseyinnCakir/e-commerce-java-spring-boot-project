@@ -68,4 +68,13 @@ public class UserController {
         }
 
     }
+@GetMapping("/users/{id}/enabled/{status}")
+    public String updateUserEnabledStatus(@PathVariable("id") Integer id,@PathVariable("status") boolean status) {
+
+        updateUserEnabledStatus(id,status);
+
+        return "User status updated";
+
+
+}
 }

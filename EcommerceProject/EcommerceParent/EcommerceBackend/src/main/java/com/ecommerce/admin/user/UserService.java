@@ -2,6 +2,7 @@ package com.ecommerce.admin.user;
 
 import com.ecommerce.common.entity.Role;
 import com.ecommerce.common.entity.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -81,5 +83,8 @@ public class UserService {
             throw new UserNotFoundException("Could not found any user with ID "+ id);
         }
         userRepository.deleteById(id);
+    }
+    public void updateUserEnabledStatus(Integer id, boolean enabled){
+        userRepository.updateEnabledStatus(id,enabled);
     }
 }
