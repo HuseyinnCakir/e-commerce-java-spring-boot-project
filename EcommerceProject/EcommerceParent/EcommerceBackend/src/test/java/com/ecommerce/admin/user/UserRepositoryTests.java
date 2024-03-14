@@ -7,12 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.list;
+import java.util.List;
 
-@DataJpaTest
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+@DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Rollback(value = false)
 public class UserRepositoryTests {
@@ -84,4 +89,45 @@ public class UserRepositoryTests {
         userRepository.deleteById(userId);
 
     }
+    @Test
+    public void testGetUserByEmail(){
+        String email = "abc@def.com";
+        User user = userRepository.getUserByEmail(email);
+
+        assertThat(user).isNotNull();
+    }
+
+    @Test
+    public void testCountById(){
+        Integer id = 100;
+        Long countById = userRepository.countById(id);
+
+        assertThat(countById).isNotNull().isGreaterThan(0);
+    }
+
+    @Test
+    public void testDisableUser(){
+        Integer id =1;
+        userRepository.updateEnabledStatus(1,false);
+    }
+
+    @Test
+    public void testEnableUser(){
+        Integer id =1;
+        userRepository.updateEnabledStatus(1,true);
+    }
+
+    @Test
+    public void testListFirstPage(){
+        int pageNumber = 0;
+        int pageSize = 4;
+        Pageable pageable = PageRequest.of(pageNumber,pageSize);
+        Page<User> page = userRepository.findAll(pageable);
+
+        List<User> listUsers = page.getContent();
+        listUsers.forEach(user -> System.out.println(user));
+
+        assertThat(listUsers.size()).isEqualTo(pageSize);
+    }
+
 }
