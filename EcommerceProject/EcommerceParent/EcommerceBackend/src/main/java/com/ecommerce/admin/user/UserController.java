@@ -4,6 +4,7 @@ import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.common.entity.Role;
 import com.ecommerce.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -23,12 +24,15 @@ public class UserController {
     private RoleRepository roleRepository;
 
     @GetMapping("/users")
-    public List<User> listAll(Model model) {
-        List<User> listUsers = service.listAll();
-        //model.addAttribute("listUsers",listUsers);
-        //return "users
-        return listUsers;
+    public List<User> listFirstPage() {
+        return listByPage(1);
 
+    }
+    @GetMapping("/users/page/{pageNum}")
+    public List<User> listByPage(@PathVariable(name = "pageNum") int pageNum){
+        Page<User> pageUser = service.listByPage(pageNum);
+        List<User> listUsers = pageUser.getContent();
+        return listUsers;
     }
 
     /*@GetMapping("/users/new")

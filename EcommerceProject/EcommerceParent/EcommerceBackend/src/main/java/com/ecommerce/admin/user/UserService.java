@@ -5,6 +5,9 @@ import com.ecommerce.common.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import java.util.NoSuchElementException;
 @Service
 @Transactional
 public class UserService {
+    public static final int USER_PER_PAGE = 4;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -24,6 +28,10 @@ public class UserService {
     public List<User> listAll(){
         return (List<User>) userRepository.findAll();
 
+    }
+    public Page<User> listByPage(int pageNum){
+        Pageable pageable = PageRequest.of(pageNum-1,USER_PER_PAGE);
+        return userRepository.findAll(pageable);
     }
     public List<Role> listRoles(){
         return (List<Role>) roleRepository.findAll();
@@ -88,3 +96,4 @@ public class UserService {
         userRepository.updateEnabledStatus(id,enabled);
     }
 }
+
