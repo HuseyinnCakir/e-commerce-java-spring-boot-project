@@ -5,6 +5,8 @@ import com.ecommerce.common.entity.Role;
 import com.ecommerce.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -25,12 +27,15 @@ public class UserController {
 
     @GetMapping("/users")
     public List<User> listFirstPage() {
-        return listByPage(1);
+        return listByPage(1,"firstName","asc");
 
     }
     @GetMapping("/users/page/{pageNum}")
-    public List<User> listByPage(@PathVariable(name = "pageNum") int pageNum){
-        Page<User> pageUser = service.listByPage(pageNum);
+    public List<User> listByPage(@PathVariable(name = "pageNum") int pageNum,
+                                 @Param("sortField") String sortField,
+                                 @Param("sortDir")String sortDir){
+
+        Page<User> pageUser = service.listByPage(pageNum,sortField,sortDir);
         List<User> listUsers = pageUser.getContent();
         return listUsers;
     }
