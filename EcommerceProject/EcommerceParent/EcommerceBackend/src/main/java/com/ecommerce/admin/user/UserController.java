@@ -68,9 +68,14 @@ public class UserController {
             service.save(user);
         }
 
+        return getRedirectUrlToAffectedUser(user);
 
-        return "User Created";
 
+    }
+
+    private static String getRedirectUrlToAffectedUser(User user) {
+        String firstParfOfEmail = user.getEmail().split("@")[0];
+        return "redirect:/users/page/1?sortField=id?sortDir=asc&keyword=" + firstParfOfEmail;
     }
 
     @GetMapping("/users/edit/{id}")
