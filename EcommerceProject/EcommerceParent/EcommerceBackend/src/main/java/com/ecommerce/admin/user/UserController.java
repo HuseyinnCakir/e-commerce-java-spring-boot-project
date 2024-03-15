@@ -1,14 +1,15 @@
 package com.ecommerce.admin.user;
 
 import com.ecommerce.admin.FileUploadUtil;
-import com.ecommerce.common.entity.Role;
+
 import com.ecommerce.common.entity.User;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -109,4 +110,12 @@ public class UserController {
 
 
 }
+
+@GetMapping("/users/export/csv")
+        public void exportToCSV(HttpServletResponse httpServletResponse) throws IOException {
+        List<User> listUsers = service.listAll();
+            UserCsvExporter exporter = new UserCsvExporter();
+            exporter.export(listUsers,httpServletResponse);
+    }
+
 }
