@@ -38,9 +38,9 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth.anyRequest()
                 .authenticated()).formLogin(form -> form
-                .loginPage("/login").usernameParameter("email").permitAll());
+                .loginPage("/login").usernameParameter("email").permitAll())
+                .logout(logout -> logout.permitAll());
 
-        return http.build();
     }
     @Bean
     WebSecurityCustomizer configureWebSecurity() throws  Exception{
