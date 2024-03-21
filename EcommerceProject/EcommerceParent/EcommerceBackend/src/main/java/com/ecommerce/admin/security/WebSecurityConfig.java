@@ -36,7 +36,9 @@ public class WebSecurityConfig {
     SecurityFilterChain configureHttpSecurity(HttpSecurity http) throws Exception {
         http.authenticationProvider(authenticationProvider());
 
-        http.authorizeHttpRequests(auth -> auth.anyRequest()
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/users/**").hasAuthority("Admin")
+                        .anyRequest()
                 .authenticated()).formLogin(form -> form
                 .loginPage("/login").usernameParameter("email").permitAll())
                 .logout(logout -> logout.permitAll())

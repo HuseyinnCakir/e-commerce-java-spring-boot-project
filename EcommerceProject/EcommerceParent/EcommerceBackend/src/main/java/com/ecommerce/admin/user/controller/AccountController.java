@@ -1,7 +1,8 @@
-package com.ecommerce.admin.user;
+package com.ecommerce.admin.user.controller;
 
 import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.admin.security.EcommerceUserDetails;
+import com.ecommerce.admin.user.UserService;
 import com.ecommerce.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
