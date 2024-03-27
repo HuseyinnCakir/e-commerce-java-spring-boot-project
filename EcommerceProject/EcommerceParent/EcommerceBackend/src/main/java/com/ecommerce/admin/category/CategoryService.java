@@ -14,17 +14,18 @@ public class CategoryService {
     public List<Category> listAll(){
         return (List<Category>) categoryRepository.findAll();
     }
-
-    public List<Category> listCategoriesUsedInForm(){
+    public Category save(Category category){
+return categoryRepository.save(category);
+}  public List<Category> listCategoriesUsedInForm(){
         List<Category> categoriesUsedInForm = new ArrayList<>();
         Iterable<Category> categoriesInDb = categoryRepository.findAll();
         for (Category category:categoriesInDb){
             if(category.getParent() == null){
-                listCategoriesUsedInForm().add(new Category(category.getName()));
+                listCategoriesUsedInForm().add(Category.copyIdAndName(category));
                 Set<Category> children = category.getChildren();
                 for (Category subCategories: children){
                     String name = "--" + subCategories.getName();
-                    listCategoriesUsedInForm().add(new Category(name));
+                    listCategoriesUsedInForm().add(Category.copyIdAndName(subCategories.getId(),name));
                     listChildren(categoriesUsedInForm,subCategories,1);
                 }
             }
@@ -43,7 +44,7 @@ public class CategoryService {
             name += "--";
         }
         name+=subCategories.getName();
-        listCategoriesUsedInForm().add(new Category(name));
+        listCategoriesUsedInForm().add(Category.copyIdAndName(subCategories.getId(),name));
         listChildren(categoriesUsedInForm,subCategories,newSubLevel);
     }
     }
