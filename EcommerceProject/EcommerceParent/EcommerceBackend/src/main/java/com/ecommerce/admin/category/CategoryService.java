@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class CategoryService {
@@ -80,6 +81,15 @@ public class CategoryService {
         listCategoriesUsedInForm().add(Category.copyIdAndName(subCategories.getId(),name));
         listSubCategoriesUsedInForm(categoriesUsedInForm,subCategories,newSubLevel);
     }
+    }
+
+    public Category get(Integer id) throws CategoryNotFoundException {
+        try {
+            return  categoryRepository.findById(id).get();
+        }
+        catch (NoSuchElementException ex) {
+            throw new CategoryNotFoundException("Could not find any category with ID " + id);
+        }
     }
 
 }
