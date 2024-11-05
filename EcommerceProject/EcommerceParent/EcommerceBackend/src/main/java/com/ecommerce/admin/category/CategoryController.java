@@ -3,6 +3,7 @@ package com.ecommerce.admin.category;
 import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/categories")
-    public List<Category> listAll(){
-        return categoryService.listAll();
+    public List<Category> listAll(@Param("sortDir") String sortDir){
+        return categoryService.listAll(sortDir);
     }
 
     @PostMapping("/categories/save")
