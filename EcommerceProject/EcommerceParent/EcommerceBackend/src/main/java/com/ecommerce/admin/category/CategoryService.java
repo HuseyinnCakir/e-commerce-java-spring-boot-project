@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class CategoryService {
@@ -82,4 +83,37 @@ public class CategoryService {
     }
     }
 
+    public Category get(Integer id) throws CategoryNotFoundException {
+        try {
+            return  categoryRepository.findById(id).get();
+        }
+        catch (NoSuchElementException ex) {
+            throw new CategoryNotFoundException("Could not find any category with ID " + id);
+        }
+    }
+public String checkUnique(Integer id, String name, String alias){
+        boolean isCreatingNew = (id == null || id == 0);
+        Category categoryByName = categoryRepository.findByName(name);
+        if(isCreatingNew){
+            if(categoryByName != null){
+                return "DuplicateName";
+            }
+            else{
+                Category categoryByAlias = categoryRepository.findByAlias(alias);
+                if(categoryByAlias != null){
+                    return "DuplicateAlias";
+                }
+            }
+    }
+        else{
+            if(categoryByName != null && categoryByName.getId() != id ){
+                return "DuplicateName";
+            }
+            Category categoryByAlias = categoryRepository.findByAlias(alias);
+            if(categoryByAlias != null  && categoryByAlias.getId() != id ){
+                return "DuplicateAlias";
+            }
+        }
+        return "OK";
+}
 }
