@@ -60,4 +60,19 @@ public class CategoryController {
         categoryService.updateCategoryEnabledStatus(id,enabled);
         return "updated";
     }
+
+    @GetMapping("/categories/delete/{id}")
+    public String updateCategoryEnabledStatus(@PathVariable("id") Integer id){
+        try {
+            categoryService.delete(id);
+            String categoryDir = "...category-images/" + id;
+            FileUploadUtil.removeDir(categoryDir);
+        }
+        catch (CategoryNotFoundException e ){
+            System.out.println(e);
+
+        }
+
+        return "deleted";
+    }
 }

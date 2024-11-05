@@ -19,7 +19,7 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
     public Category findByName(String name);
     public Category findByAlias(String alias);
-
+    public Long countById(Integer id);
     @Query("UPDATE Category c SET c.enabled =?2 WHERE id=?1")
     @Modifying
     public void updateEnabledStatus(Integer id, boolean enabled);

@@ -55,7 +55,7 @@ public class CategoryService {
             }
             name+=subCategory.getName();
 
-            hierarchicalCategories.add(Category.copyFull(subCategory,name));
+            hierarchicalCategories.add(Category.copyFull(subCategory));
             listSubHierarchicalCategories(hierarchicalCategories,subCategory,newSubLevel,sortDir );
         }
     }
@@ -152,5 +152,12 @@ public String checkUnique(Integer id, String name, String alias){
 
     public void updateCategoryEnabledStatus(Integer id, boolean enabled){
         categoryRepository.updateEnabledStatus(id,enabled);
+    };
+    public void delete(Integer id) throws CategoryNotFoundException {
+        Long countById = categoryRepository.countById(id);
+        if(countById == null || countById == 0) {
+            throw new CategoryNotFoundException("Could not find any category with ID"+ id);
+        }
+        categoryRepository.deleteById(id);
     }
 }
