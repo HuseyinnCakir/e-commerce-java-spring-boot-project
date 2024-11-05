@@ -54,4 +54,10 @@ public class CategoryController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping("/categories/{id}/enabled/{status}")
+    public String updateCategoryEnabledStatus(@PathVariable("id") Integer id,
+                                              @PathVariable("status") boolean enabled ){
+        categoryService.updateCategoryEnabledStatus(id,enabled);
+        return "updated";
+    }
 }

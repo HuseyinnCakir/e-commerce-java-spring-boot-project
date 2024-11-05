@@ -1,11 +1,14 @@
 package com.ecommerce.admin.category;
 
 import com.ecommerce.common.entity.Category;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
-
+@Service
+@Transactional
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
@@ -145,5 +148,9 @@ public String checkUnique(Integer id, String name, String alias){
         });
         sortedChildren.addAll(children);
         return  sortedChildren;
+    }
+
+    public void updateCategoryEnabledStatus(Integer id, boolean enabled){
+        categoryRepository.updateEnabledStatus(id,enabled);
     }
 }

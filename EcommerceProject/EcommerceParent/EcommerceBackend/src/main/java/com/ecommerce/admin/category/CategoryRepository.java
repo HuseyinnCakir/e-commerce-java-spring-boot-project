@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -18,4 +19,8 @@ public interface CategoryRepository extends JpaRepository<Category,Integer> {
 
     public Category findByName(String name);
     public Category findByAlias(String alias);
+
+    @Query("UPDATE Category c SET c.enabled =?2 WHERE id=?1")
+    @Modifying
+    public void updateEnabledStatus(Integer id, boolean enabled);
 }
