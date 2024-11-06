@@ -1,10 +1,15 @@
 package com.ecommerce.admin.brand;
 
+import com.ecommerce.admin.category.CategoryPageInfo;
 import com.ecommerce.admin.category.CategoryRepository;
 import com.ecommerce.admin.category.CategoryService;
 import com.ecommerce.common.entity.Brand;
 import com.ecommerce.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -13,6 +18,7 @@ import java.util.NoSuchElementException;
 
 @Service
 public class BrandService {
+    public static final int BRAND_PER_PAGE = 10;
     @Autowired
     private BrandRepository brandRepository;
 
@@ -20,6 +26,21 @@ public class BrandService {
         return (List<Brand>) brandRepository.findAll();
 
     }
+
+
+    public Page<Brand> listByPage(int pageNum, String sortDir, String keyword){
+        Sort sort = Sort.by(sortDir);
+        sort = sort.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNum - 1,BRAND_PER_PAGE,sort);
+        Page<Category> pageCategories = null;
+        if(keyword !=null){
+            return brandRepository.findAll(keyword,pageable);
+        }
+        else{
+            return brandRepository.findAll(pageable);
+        }
+    }
+
     public Brand get(Integer id) throws BrandNotFoundException {
         try {
             return brandRepository.findById(id).get();

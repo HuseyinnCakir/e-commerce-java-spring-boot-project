@@ -3,11 +3,14 @@ package com.ecommerce.admin.brand;
 import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.admin.category.CategoryCsvExporter;
 import com.ecommerce.admin.category.CategoryNotFoundException;
+import com.ecommerce.admin.category.CategoryPageInfo;
 import com.ecommerce.admin.category.CategoryService;
 import com.ecommerce.common.entity.Brand;
 import com.ecommerce.common.entity.Category;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +32,21 @@ public class BrandController {
     public List<Brand> listAll() {
        List<Brand> brands = brandService.listAll();
        return brands;
+    }
+    @GetMapping("/brands/page/{pageNum}")
+    public List<Brand> listByPage(@PathVariable("pageNum") int pageNum,
+                                     @Param("sortDir") String sortDir,
+                                     @Param("keyword") String keyword){
+
+        Page<Brand> page = brandService.listByPage(pageNum,sortDir,keyword);
+        List<Brand> listBrands =page.getContent();
+        long startCount = (pageNum -1 ) * brandService.BRAND_PER_PAGE +1;
+        long endCount = startCount + brandService.BRAND_PER_PAGE -1;
+        if(endCount > page.getTotalElements()){
+            endCount = page.getTotalElements();
+        }
+
+        return  listBrands; // will fix soon
     }
 
     @GetMapping("/brands/new")
