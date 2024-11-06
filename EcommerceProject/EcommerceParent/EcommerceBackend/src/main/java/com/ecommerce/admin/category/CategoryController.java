@@ -19,9 +19,21 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("/categories")
-    public List<Category> listAll(@Param("sortDir") String sortDir){
-        return categoryService.listAll(sortDir);
+    public List<Category> listFirstPage(@Param("sortDir") String sortDir){
+        return categoryService.listByPage(1,sortDir);
     }
+
+    @GetMapping("/categories/page/{pageNum}")
+    public List<Category> listByPage(@PathVariable("pageNum") int pageNum,@Param("sortDir") String sortDir){
+        if(sortDir == null || sortDir.isEmpty()) {
+            sortDir = "asc";
+        }
+        CategoryPageInfo categoryPageInfo = new CategoryPageInfo();
+        List <Category> listCategories = categoryService.listByPage(categoryPageInfo,pageNum,sortDir);
+        return  listCategories;
+    }
+
+
 
     @PostMapping("/categories/save")
     public Category saveCategory(Category category, @RequestParam("fileImage")MultipartFile multipartFile) throws IOException {
