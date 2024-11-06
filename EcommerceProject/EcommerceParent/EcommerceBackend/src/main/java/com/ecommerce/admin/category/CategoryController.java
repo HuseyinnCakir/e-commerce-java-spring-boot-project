@@ -20,17 +20,25 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public List<Category> listFirstPage(@Param("sortDir") String sortDir){
-        return categoryService.listByPage(1,sortDir);
+        return categoryService.listByPage(null,1,sortDir,null);
     }
 
     @GetMapping("/categories/page/{pageNum}")
-    public List<Category> listByPage(@PathVariable("pageNum") int pageNum,@Param("sortDir") String sortDir){
+    public List<Category> listByPage(@PathVariable("pageNum") int pageNum,
+                                     @Param("sortDir") String sortDir,
+                                     @Param("keyword") String keyword){
         if(sortDir == null || sortDir.isEmpty()) {
             sortDir = "asc";
         }
         CategoryPageInfo categoryPageInfo = new CategoryPageInfo();
-        List <Category> listCategories = categoryService.listByPage(categoryPageInfo,pageNum,sortDir);
-        return  listCategories;
+        List <Category> listCategories = categoryService.listByPage(categoryPageInfo,pageNum,sortDir,keyword);
+        long startCount = (pageNum -1 ) * CategoryService.ROOT_CATEGORIES_PER_PAGE +1;
+        long endCount = startCount + CategoryService.ROOT_CATEGORIES_PER_PAGE -1;
+        if(endCount > categoryPageInfo.getTotalElements()){
+            endCount = categoryPageInfo.getTotalElements();
+        }
+
+        return  listCategories; // will fix soon
     }
 
 
