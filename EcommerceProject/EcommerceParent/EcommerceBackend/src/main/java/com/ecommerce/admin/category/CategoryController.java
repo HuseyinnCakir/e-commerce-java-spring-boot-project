@@ -2,6 +2,7 @@ package com.ecommerce.admin.category;
 
 import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.common.entity.Category;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.util.StringUtils;
@@ -94,5 +95,12 @@ public class CategoryController {
         }
 
         return "deleted";
+    }
+
+    @GetMapping("/categories/export/csv")
+    public void exportToCsv(HttpServletResponse response) throws IOException {
+       List<Category> listCategories = categoryService.listCategoriesUsedInForm("asc");
+       CategoryCsvExporter exporter = new CategoryCsvExporter();
+       exporter.export(listCategories,response);
     }
 }
