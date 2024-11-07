@@ -1,9 +1,12 @@
 package com.ecommerce.admin.product;
 
+import com.ecommerce.admin.FileUploadUtil;
+import com.ecommerce.admin.brand.BrandNotFoundException;
 import com.ecommerce.common.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -24,4 +27,16 @@ public class ProductController {
         return savedProduct;
     }
 
+
+    @GetMapping("/products/delete/{id}")
+    public String deleteProduct(@PathVariable(name = "id") Integer id){
+            try {
+                productService.delete(id);
+            } catch (ProductNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+            String categoryDir = "...brand-logos/" + id;
+            FileUploadUtil.removeDir(categoryDir);
+            return "deleted";
+        }
 }

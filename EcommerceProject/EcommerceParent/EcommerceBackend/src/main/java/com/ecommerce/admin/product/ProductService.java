@@ -1,5 +1,6 @@
 package com.ecommerce.admin.product;
 
+import com.ecommerce.admin.brand.BrandNotFoundException;
 import com.ecommerce.common.entity.Brand;
 import com.ecommerce.common.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,13 @@ public class ProductService {
 
         return "OK";
     }
+
+    public void delete(Integer id ) throws ProductNotFoundException {
+        Long countById = productRepository.countById(id);
+        if(countById == null || countById == 0){
+            throw new ProductNotFoundException("Could not find any product with ID "+ id);
+        }
+        productRepository.deleteById(id);
+    }
+
 }
