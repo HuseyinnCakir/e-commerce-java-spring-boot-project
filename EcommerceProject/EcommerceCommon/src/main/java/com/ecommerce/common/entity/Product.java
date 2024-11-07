@@ -225,4 +225,8 @@ public class Product {
         if(id == null || mainImage == null) return "/images/image-thumbnail.png";
         return "/product-images/" + this.id + "/" + this.mainImage;
     }
+
+    public void addDetail(String name, String value) {
+        this.details.add((new ProductDetail(name,value,this)));
+    }
 }
