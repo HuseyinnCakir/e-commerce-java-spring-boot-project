@@ -2,9 +2,7 @@ package com.ecommerce.common.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "products")
@@ -47,6 +45,8 @@ public class Product {
     private Brand brand;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductImage> images = new HashSet<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductDetail> details = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -211,6 +211,15 @@ public class Product {
     public void addExtraImage(String imageName){
         this.images.add(new ProductImage(imageName,this));
     }
+
+    public List<ProductDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<ProductDetail> details) {
+        this.details = details;
+    }
+
     @Transient
     public String getMainImagePath(){
         if(id == null || mainImage == null) return "/images/image-thumbnail.png";
