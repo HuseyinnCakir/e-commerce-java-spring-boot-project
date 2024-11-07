@@ -20,7 +20,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
         exposeDirectory("../brand-images",registry);
 
-
+        exposeDirectory("../product-images",registry);
     }
     private void exposeDirectory(String pathPattern,ResourceHandlerRegistry registry){
         Path path = Paths.get(pathPattern);
