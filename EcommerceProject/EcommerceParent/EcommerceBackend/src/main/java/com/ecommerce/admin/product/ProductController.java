@@ -108,6 +108,17 @@ public class ProductController {
             return "deleted";
         }
 
+        @GetMapping("/products/edit/{id}")
+        public Product editProduct(@PathVariable("id") Integer id){
+            try {
+                Product product = productService.get(id);
+                return  product;
+            } catch (ProductNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
 
 
 }
