@@ -18,6 +18,12 @@ public class ProductImage {
 
     }
 
+    public ProductImage(Product product, String name, Integer id) {
+        this.product = product;
+        this.name = name;
+        this.id = id;
+    }
+
     public ProductImage(String name, Product product) {
         this.name = name;
         this.product = product;
