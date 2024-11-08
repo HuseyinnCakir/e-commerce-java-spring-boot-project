@@ -88,6 +88,12 @@ public class CategoryService {
         }
     }
     public Category save(Category category){
+        Category parent = category.getParent();
+        if(parent != null) {
+            String allParentIds = parent.getAllParentIDS() == null ? "-": parent.getAllParentIDS();
+            allParentIds += String.valueOf(parent.getId()) + "-";
+            category.setAllParentIDS(allParentIds);
+        }
         return categoryRepository.save(category);
 }  public List<Category> listCategoriesUsedInForm(String sortDir){
         List<Category> categoriesUsedInForm = new ArrayList<>();
