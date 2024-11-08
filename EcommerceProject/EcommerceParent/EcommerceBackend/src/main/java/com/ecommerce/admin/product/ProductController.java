@@ -2,7 +2,7 @@ package com.ecommerce.admin.product;
 
 import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.admin.category.CategoryService;
-import com.ecommerce.common.entity.Brand;
+import com.ecommerce.admin.security.EcommerceUserDetails;
 import com.ecommerce.common.entity.Category;
 import com.ecommerce.common.entity.Product;
 import com.ecommerce.common.entity.ProductImage;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,14 +61,18 @@ public class ProductController {
     }
     @PostMapping("/products/save")
     public Product saveProduct(Product product,
-                               @RequestParam("fileImage") MultipartFile mainImageMultipart,
-                               @RequestParam("extraImage") MultipartFile[] extraImageMultiparts,
+                               @RequestParam(value = "fileImage") MultipartFile mainImageMultipart,
+                               @RequestParam(value = "extraImage") MultipartFile[] extraImageMultiparts,
                                @RequestParam(name = "detailIDs",required = false) String[] detailIDs,
                                @RequestParam(name = "detailNames",required = false) String[] detailNames,
                                @RequestParam(name = "detailValues",required = false) String[] detailValues,
                                @RequestParam(name = "imageIds",required = false) String[] imageIDs,
-                               @RequestParam(name = "detailValues",required = false) String[] imageNames) throws IOException {
-
+                               @RequestParam(name = "detailValues",required = false) String[] imageNames,
+                               @AuthenticationPrincipal EcommerceUserDetails loggedUser) throws IOException {
+            if(loggedUser.hasRole("Salesperson")){
+                productService.saveProductPrice(product);
+                return product;
+            }
             setMainImage(mainImageMultipart,product);
             setExistingExtraImageNames(imageIDs,imageNames,product);
             setNewExtraImageNames(extraImageMultiparts,product);
