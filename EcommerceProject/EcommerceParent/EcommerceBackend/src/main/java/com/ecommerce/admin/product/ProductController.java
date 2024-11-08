@@ -1,7 +1,9 @@
 package com.ecommerce.admin.product;
 
 import com.ecommerce.admin.FileUploadUtil;
+import com.ecommerce.admin.category.CategoryService;
 import com.ecommerce.common.entity.Brand;
+import com.ecommerce.common.entity.Category;
 import com.ecommerce.common.entity.Product;
 import com.ecommerce.common.entity.ProductImage;
 import org.slf4j.Logger;
@@ -31,17 +33,23 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping("/products")
     public List<Product> listAll(){
-        return listByPage(1,"asc",null);
+        return listByPage(1,"name","asc",null,0);
     }
     @GetMapping("/products/page/{pageNum}")
     public List<Product> listByPage(@PathVariable("pageNum") int pageNum,
+                                    @Param("sortField") String sortField,
                                   @Param("sortDir") String sortDir,
-                                  @Param("keyword") String keyword){
+                                  @Param("keyword") String keyword,
+                                    @Param("categoryId") Integer categoryId ){
 
-        Page<Product> page = productService.listByPage(pageNum,sortDir,keyword);
+        Page<Product> page = productService.listByPage(pageNum,sortField,sortDir,keyword,categoryId);
         List<Product> listProducts =page.getContent();
+        List<Category> listCategories = categoryService.listCategoriesUsedInForm("asc"); // will add that to response
         long startCount = (pageNum -1 ) * productService.PRODUCTS_PER_PAGE +1;
         long endCount = startCount + productService.PRODUCTS_PER_PAGE -1;
         if(endCount > page.getTotalElements()){
