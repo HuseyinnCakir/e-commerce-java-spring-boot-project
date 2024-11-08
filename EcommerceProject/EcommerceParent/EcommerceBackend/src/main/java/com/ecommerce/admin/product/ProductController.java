@@ -172,6 +172,15 @@ public class ProductController {
 
         }
 
+    @GetMapping("/products/detail/{id}")
+    public Product viewDetailProduct(@PathVariable("id") Integer id){
+        try {
+            Product product = productService.get(id);
+            return  product;
+        } catch (ProductNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
+    }
 
 }
