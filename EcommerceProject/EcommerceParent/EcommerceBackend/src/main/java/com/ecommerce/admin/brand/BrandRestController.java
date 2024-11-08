@@ -3,8 +3,8 @@ package com.ecommerce.admin.brand;
 
 import com.ecommerce.common.entity.Brand;
 import com.ecommerce.common.entity.Category;
-import exception.BrandNotFoundException;
-import exception.BrandNotFoundRestException;
+import com.ecommerce.common.exception.BrandNotFoundException;
+import com.ecommerce.common.exception.BrandNotFoundRestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;

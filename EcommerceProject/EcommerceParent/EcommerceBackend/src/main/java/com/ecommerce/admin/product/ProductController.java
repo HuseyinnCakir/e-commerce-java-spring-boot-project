@@ -5,7 +5,7 @@ import com.ecommerce.admin.category.CategoryService;
 import com.ecommerce.admin.security.EcommerceUserDetails;
 import com.ecommerce.common.entity.Category;
 import com.ecommerce.common.entity.Product;
-import exception.ProductNotFoundException;
+import com.ecommerce.common.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;

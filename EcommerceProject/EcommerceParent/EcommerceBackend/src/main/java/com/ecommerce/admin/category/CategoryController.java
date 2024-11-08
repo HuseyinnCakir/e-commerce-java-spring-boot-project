@@ -2,7 +2,7 @@ package com.ecommerce.admin.category;
 
 import com.ecommerce.admin.FileUploadUtil;
 import com.ecommerce.common.entity.Category;
-import exception.CategoryNotFoundException;
+import com.ecommerce.common.exception.CategoryNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
