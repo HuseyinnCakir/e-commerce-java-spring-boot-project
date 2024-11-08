@@ -1,6 +1,7 @@
 package com.ecommerce.admin.category;
 
 import com.ecommerce.common.entity.Category;
+import exception.CategoryNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

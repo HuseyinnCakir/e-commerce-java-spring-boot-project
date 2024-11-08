@@ -1,4 +1,4 @@
-package com.ecommerce.admin.brand;
+package exception;
 
 public class BrandNotFoundException extends Exception{
     public  BrandNotFoundException(String message){

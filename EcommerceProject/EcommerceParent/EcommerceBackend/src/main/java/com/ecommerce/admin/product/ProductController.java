@@ -5,15 +5,12 @@ import com.ecommerce.admin.category.CategoryService;
 import com.ecommerce.admin.security.EcommerceUserDetails;
 import com.ecommerce.common.entity.Category;
 import com.ecommerce.common.entity.Product;
-import com.ecommerce.common.entity.ProductImage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class ProductController {

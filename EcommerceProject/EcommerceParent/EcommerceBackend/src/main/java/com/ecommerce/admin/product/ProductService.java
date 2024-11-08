@@ -1,9 +1,8 @@
 package com.ecommerce.admin.product;
 
-import com.ecommerce.admin.brand.BrandNotFoundException;
-import com.ecommerce.common.entity.Brand;
 import com.ecommerce.common.entity.Category;
 import com.ecommerce.common.entity.Product;
+import exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
