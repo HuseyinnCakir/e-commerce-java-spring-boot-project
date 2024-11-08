@@ -3,6 +3,7 @@ package com.ecommerce.common.entity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -125,5 +126,19 @@ public class User {
     public String getPhotosImagePath(){
         if(id== null || photos == null) return "/images/default-user-image.png";
         return "user-photos" + this.id + "/" + this.photos;
+    }
+
+    @Transient String getFullName(){
+        return  firstName + " " + lastName;
+    }
+    public  boolean hasRole(String roleName){
+        Iterator<Role> iterator = roles.iterator();
+        while (iterator.hasNext()){
+            Role role = iterator.next();
+            if(role.getName().equals(roleName)){
+                return true;
+            }
+        }
+        return false;
     }
 }
