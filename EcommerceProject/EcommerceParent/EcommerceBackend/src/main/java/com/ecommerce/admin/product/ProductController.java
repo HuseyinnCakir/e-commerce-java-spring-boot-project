@@ -1,11 +1,14 @@
 package com.ecommerce.admin.product;
 
 import com.ecommerce.admin.FileUploadUtil;
+import com.ecommerce.common.entity.Brand;
 import com.ecommerce.common.entity.Product;
 import com.ecommerce.common.entity.ProductImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +33,23 @@ public class ProductController {
 
     @GetMapping("/products")
     public List<Product> listAll(){
-        return productService.listAll();
+        return listByPage(1,"asc",null);
     }
+    @GetMapping("/products/page/{pageNum}")
+    public List<Product> listByPage(@PathVariable("pageNum") int pageNum,
+                                  @Param("sortDir") String sortDir,
+                                  @Param("keyword") String keyword){
 
+        Page<Product> page = productService.listByPage(pageNum,sortDir,keyword);
+        List<Product> listProducts =page.getContent();
+        long startCount = (pageNum -1 ) * productService.PRODUCTS_PER_PAGE +1;
+        long endCount = startCount + productService.PRODUCTS_PER_PAGE -1;
+        if(endCount > page.getTotalElements()){
+            endCount = page.getTotalElements();
+        }
+
+        return  listProducts; // will fix soon
+    }
     @PostMapping("/products/save")
     public Product saveProduct(Product product,
                                @RequestParam("fileImage") MultipartFile mainImageMultipart,
